@@ -1,7 +1,7 @@
 # JS抽象语法树（Abstract syntax tree）
 
 ## 初识AST
-JS抽象语法树（Abstract syntax tree），简称AST，是JS代码对应的树形结构，它一点也不抽象，修改代码的AST，可以用来做很多事，ES6转ES5，代码提示插件，代码格式化，写webpack loader等等    
+JS抽象语法树（Abstract syntax tree），简称AST，是JS代码对应的树形结构，它一点也不抽象，修改代码的AST，可以做很多事，ES6转ES5，代码提示插件，代码格式化，写webpack loader等等    
 
 来看一段代码  
 
