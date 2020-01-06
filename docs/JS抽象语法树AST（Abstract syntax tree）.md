@@ -83,7 +83,8 @@ function welcome(name){
 现在开始做一个webpack loader，作用是将代码里的 == 转换为 ===，操作AST需要用到以下几个包  
 
 1、```@babel/parser``` 将代码解析成AST  
-2、```@babel/generator``` 将AST生成代码
+2、```@babel/traverse``` 对AST增删改操作  
+3、```@babel/generator``` 将AST生成代码
 
 ### 分析
 和上面一样，将代码拆分，我们要转换的 == 是在一个 ```BinaryExpression```（二元运算表达式）里面，将代码输入AST explorer，发现有两个 ```BinaryExpression```，运算符分别是 == 和 %，== 才是我们要找的那个，因此，只需要遍历全部 ```BinaryExpression```并判断其 ```operator```是 ==，然后将 == 替换成 === 即可  
@@ -99,7 +100,7 @@ npm init
 ```
 安装依赖包
 ```
-npm install @babel/parser @babel/parser -D
+npm install @babel/parser @babel/traverse @babel/generator -D
 ```
 新建三个文件：入口文件index.js、webpack loader文件test-loader.js、webpack配置文件webpack.config.js  
 
@@ -167,5 +168,11 @@ function isEven(n) {
   }
 }
 ```
+查看编译生成的main.js，== 被替换成了 ===  
+```
+eval("function isEven(n) {\n  if (n % 2 === 0) {\n    return true;\n  }\n}\n\n//# sourceURL=webpack:///./index.js?");
+```  
 loader到这里就算完成了，之后就可以把这个test-loader.js做成一个npm包发布  
+
+这个例子很简单，没有发挥出AST的威力，但足以说明loader的工作原理
 
