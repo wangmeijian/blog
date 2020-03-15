@@ -41,7 +41,7 @@ interface Account extends BaseAccount{
 ## 二、@types/[package]
 
 同样，TypeScript项目中，第三方库也必须声明类型，比如在TS中引用了react，VSCode会给你这样一个提示：无法找到模块“react”的声明文件    
-![react](![](https://raw.githubusercontent.com/wangmeijian/images/master/erweimademimi/20200315122550.png))  
+![react](https://raw.githubusercontent.com/wangmeijian/images/master/erweimademimi/20200315122550.png)  
 
 解决办法是手动安装react声明```@types/react```
 ```bash
@@ -52,4 +52,4 @@ npm install @types/react
 如果```@types/[package]```找不到相关的第三方声明，也可以手动新建```<package>.d.ts```来声明第三方库暴露的API  
 
 装了```@types/react```还有一个好处就是会有代码提示  
-![react代码提示](![](https://raw.githubusercontent.com/wangmeijian/images/master/erweimademimi/20200315132725.png))
+![react代码提示](https://raw.githubusercontent.com/wangmeijian/images/master/erweimademimi/20200315132725.png)
