@@ -8,7 +8,19 @@ JS是一种单线程脚本语言，为什么当初设计成单线程？
 
 那么重点来了，如何确定JS任务执行顺序？
 
-先自己思考一下输出顺序，看完本文，这段代码根本不需要思考就能得出答案
+Event loops中，JS任务分为2种，task队列、microtask队列，业界一般把tasks队列称为宏任务，把microtasks叫做微任务。
+
+**每执行完一个task，就会查看microtask队列里有没有任务，microtask队列不为空，则按先进先出的原则依次执行，执行完了再继续下一个task；microtask队列为空，就直接执行下一个task，以此类推**
+
+什么任务会添加到task？
+
+代码刚开始执行时，整体代码就是一个task，在代码执行过程中，凡是看到setTimeout、setInterval、I/O、setImmediate（Nodejs环境）就往task队列里push
+
+什么任务会添加到microtask？
+
+在代码执行过程中，凡是看到Promise.then/catch/finally、MutationObserver、process.nextTick(Nodejs环境)就往microtask队列里push
+
+按照以上规则，先自己思考一下输出顺序，看完本文后，这段代码根本不需要思考就能得出答案
 ```js
 // 先自己思考一下输出顺序
 console.log('script start');
@@ -26,10 +38,8 @@ Promise.resolve().then(function () {
 console.log('script end');
 ```
 
-代码从上到下开始执行，将代码分为2部分，task队列、microtask队列，业界一般把tasks队列称为宏任务，把microtasks叫做微任务。
+代码从上到下开始执行
 
-task有setTimeout、setInterval、I/O、setImmediate（Nodejs环境）
-microtask有Promise.then/catch/finally、MutationObserver、process.nextTick(Nodejs环境)
 
 
 
