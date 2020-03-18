@@ -85,8 +85,10 @@ Promise.resolve().then(function () {
 9. 输出刚刚push的 ```inner then2```
 10. 内部new Promise执行完，外部promise第一个then拿到返回值，继续往下，遇到它的第二个then，push到microtask队列
 11. 输出刚刚push的 ```then```
-12. 输出顺序为：promise -> inner promise -> inner then1 -> inner then2 -> then
-13. 注意：then链式调用时，如果前面的then方法return了一个新Promise对象，后面的then会等待这个新Promise对象状态发生变化后，才执行
+
+输出顺序为：promise -> inner promise -> inner then1 -> inner then2 -> then
+
+注意：then链式调用时，如果前面的then方法return了一个新Promise对象，后面的then会等待这个新Promise对象状态发生变化后，才执行
 
 如果把return去掉呢？
 
