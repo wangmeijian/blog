@@ -7,7 +7,7 @@
 
 浏览器缓存处理流程图  
 
-<img src="https://raw.githubusercontent.com/wangmeijian/images/master/erweimademimi/20200315140946.png" width="600" />
+<img src="https://raw.githubusercontent.com/wangmeijian/images/master/http-cache/20200315140946.png" width="600" />
 
 举例：当浏览器发起一个GET请求去获取图片A，到了缓存这里   
 

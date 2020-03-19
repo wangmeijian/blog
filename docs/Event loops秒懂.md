@@ -1,12 +1,14 @@
 # Event loops秒懂
 
+<img src="https://raw.githubusercontent.com/wangmeijian/images/master/event-loops/event-loops.png" height="240" />
+
 JS是一种单线程脚本语言，为什么要设计成单线程？
 
 举例说明，假设JS是多线程脚本语言，A线程修改了DOM，B线程删除了DOM，一旦B线程先执行完，DOM被删除了，A线程就会报错，为了避免类似这种问题，JS被设计为单线程  
 
 单线程的问题是一次只能做一件事，要做第二件事，必须等第一件事先做完。假如有个需求是每5分钟更新一次数据，用setInterval去计时，那么这个页面JS永远无法做其他事了，线程一直被setInterval占用着。为了让JS可以同时执行多个任务，引入了Event loops（事件循环）机制
 
-Event loops把JS分为2种队列，task队列、microtask队列，业界一般把tasks队列称为宏任务，把microtasks叫做微任务。
+Event loops把JS分为2种队列，task队列、microtask队列，业界一般把tasks队列称为宏任务，microtask翻译过来叫微任务。
 
 task队列和microtask队列执行顺序是怎样的？
 
@@ -19,7 +21,7 @@ task队列和microtask队列执行顺序是怎样的？
 
 这就是Event loops，类似于递归执行过程
 
-按照以上规则，先自己思考一下输出顺序，看完本文后，这段代码根本不需要思考就能得出答案
+按照以上规则，思考以下代码输出顺序
 ```js
 // 先自己思考一下输出顺序
 console.log('script start');
@@ -39,14 +41,14 @@ console.log('script end');
 
 分析：
 
-1. 整体代码为第一个task，从上到下开始执行
+1. 整体代码做为第一个task，从上到下开始执行
 2. 输出```script start```
 3. 遇到```setTimeout()```，push到task队列，等待执行
-4. 遇到```Promise.then()```，push到microtask队列，等待执行
+4. 遇到```Promise```第一个```then()```，push到microtask队列，等待执行
 5. 输出```script end```
 6. 第一个task执行完成，查看microtask队列，有任务，开始执行
-7. 输出```promise```
-8. 输出```then```
+7. 输出```promise```，遇到第二个```then()```，push到microtask队列
+8. 输出刚刚push的```then```
 9. microtask队列执行完成，取下一个task执行
 10. 输出```timeout```
 
@@ -54,7 +56,7 @@ console.log('script end');
 
 ## 升级版
 
-将上面的例子升级了一下，假设Promise.then内部又有Promise，怎么分析？
+将上面例子的Promise升级了一下，假设Promise.then内部又有Promise，怎么分析？
 
 ```js
 Promise.resolve().then(function () {
@@ -136,4 +138,4 @@ new Promise(function (resolve, reject) {
 });
 ```
 
-很明显，不能。因为错误在setTimeout内部抛出，setTimeout和.catch并不在同一个task执行，抛出错误的时候，catch已经执行完了。
+熟悉了Event loops，回答这个问题就很容易：不能捕获到。因为错误在setTimeout内部抛出，setTimeout和.catch并不在同一个task执行，抛出错误的时候，catch已经执行完了。
