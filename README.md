@@ -7,3 +7,4 @@
 3、[四问HTTP缓存，你都了解吗？](https://github.com/wangmeijian/blog/blob/master/docs/%E5%9B%9B%E9%97%AEHTTP%E7%BC%93%E5%AD%98%EF%BC%8C%E4%BD%A0%E9%83%BD%E4%BA%86%E8%A7%A3%E5%90%97%EF%BC%9F.md)  
 4、[TypeScript interface声明](https://github.com/wangmeijian/blog/blob/master/docs/TypeScript%20interface%E5%A3%B0%E6%98%8E.md)  
 5、[Event loops秒懂](https://github.com/wangmeijian/blog/blob/master/docs/Event%20loops%E7%A7%92%E6%87%82.md)
+6、[如何为网站添加深色模式？](https://github.com/wangmeijian/blog/blob/master/docs/%E5%A6%82%E4%BD%95%E4%B8%BA%E7%BD%91%E7%AB%99%E6%B7%BB%E5%8A%A0%E6%B7%B1%E8%89%B2%E6%A8%A1%E5%BC%8F%EF%BC%9F.md)
