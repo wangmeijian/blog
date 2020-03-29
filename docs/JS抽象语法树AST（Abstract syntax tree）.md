@@ -172,7 +172,31 @@ function isEven(n) {
 ```
 eval("function isEven(n) {\n  if (n % 2 === 0) {\n    return true;\n  }\n}\n\n//# sourceURL=webpack:///./index.js?");
 ```  
-loader到这里就算完成了，之后就可以把这个test-loader.js做成一个npm包发布  
+loader到这里就算完成了，之后就可以把这个test-loader.js做成一个npm包发布
 
-这个例子很简单，没有发挥出AST的威力，但足以说明loader的工作原理
+## Loader进阶
 
+loader插件一般会提供一些配置项，如何获取用户配置呢？需要这样：
+
+```
+const loaderUtils = require('loader-utils');
+module.exports = function(source) {
+  // 获取到用户给当前 Loader 传入的 options
+  const options = loaderUtils.getOptions(this);
+  return source;
+};
+```
+ES6+转成ES5，可能还需要返回Source Map，那么就需要用this.callback()来返回转换后的内容，它有四个参数，分别是：
+```
+this.callback(
+  // 当无法转换原内容时，给 Webpack 返回一个 Error
+  err: Error | null,
+  // 原内容转换后的内容
+  content: string | Buffer,
+  // 用于把转换后的内容得出原内容的 Source Map，方便调试
+  sourceMap?: SourceMap,
+  // 如果本次转换为原内容生成了 AST 语法树，可以把这个 AST 返回，
+  // 以方便之后需要 AST 的 Loader 复用该 AST，以避免重复生成 AST，提升性能
+  abstractSyntaxTree?: AST
+);
+```
