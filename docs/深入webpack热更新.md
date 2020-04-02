@@ -26,6 +26,22 @@ setupApp() {
 
 > ```webpack```调用```chokidar```模块来监听文件变化
 
-webpack内部会实例化一个编译器```compiler```，```compiler.watch```方法内部依赖了```chokidar```模块来监听文件变化，```chokidar```那么又是根据什么来判断文件发生了变化？webpack执行在node环境中，为什么不直接用```fs.watch```和```fs.watchFile```来监听文件变化？
+webpack内部会实例化一个编译器```compiler```，```compiler.watch```方法内部依赖了```chokidar```模块来监听文件变化，```chokidar```那么又是根据什么来判断文件发生了变化？而且webpack执行在node环境中，为什么不直接用```fs.watch```和```fs.watchFile```来监听文件变化？
 
-```chokidar```内部也依赖了```fs.watch```和```fs.watchFile```来监听文件变化，但这不是它的全部。```fs.watch```和```fs.watchFile```这两个API在OS X系统上有点问题，Nodejs官方文档上有说明：fs.watch的API在各个平台上并非100%一致，在某些情况下不可用，比如Docker上。fs.watchFile则是
+实际上```chokidar```内部也依赖了```fs.watch```和```fs.watchFile```来监听文件变化，但这不是它的全部，由于```fs.watch```和```fs.watchFile```这两个API存在一些问题：
+
+Nodejs ```fs.watch```  
+* 在MacOS上使用Sublime编辑文件，不会报告文件修改事件
+* 经常一次事件报告两次
+* 报告的大多数事件是rename，在window系统上删除文件也报rename
+* 没有提供简便的方法来递归监视文件树
+
+Nodejs ```fs.watchFile```  
+* 事件处理几乎一样糟糕
+* 也没有提供任何递归监视
+* 轮询方式监视文件，导致高CPU占用
+
+Nodejs官方文档上有说明：fs.watch的API在各个平台上并非100%一致，在某些情况下不可用，比如Docker上。
+
+
+
