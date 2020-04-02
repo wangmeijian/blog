@@ -43,5 +43,47 @@ Nodejs ```fs.watchFile```
 
 Nodejs官方文档上有说明：fs.watch的API在各个平台上并非100%一致，在某些情况下不可用，比如Docker上。
 
+为了解决以上问题，```chokidar```将内部核心内容分为两块，分别是```nodefs-handler.js```和```fsEvents-handler.js```，macOS使用```fsEvents-handler.js```监听文件变化，其它系统用```nodefs-handler.js```。```fsEvents-handler.js```内部依赖```fsevents```模块，```fsevents```集成了C++从系统底层来监听文件变化，一图胜千言
+
+<img src="https://raw.githubusercontent.com/wangmeijian/images/master/webpack/chokidar.png" width="600" />
+
+node_modules/chokidar/index.js核心代码：
+
+```js
+// node_modules/chokidar/index.js
+
+var NodeFsHandler = require('./lib/nodefs-handler');
+var FsEventsHandler = require('./lib/fsevents-handler');
+
+function importHandler(handler) {
+  Object.keys(handler.prototype).forEach(function(method) {
+    FSWatcher.prototype[method] = handler.prototype[method];
+  });
+}
+// FSWatcher 继承了NodeFsHandler 和 FsEventsHandler的方法
+importHandler(NodeFsHandler);
+if (FsEventsHandler.canUse()) importHandler(FsEventsHandler);
+
+// 增加文件监听
+FSWatcher.prototype.add = function(paths) {
+  // 判断系统支持fsevents，优先用fsevents监听文件变化
+  if (this.options.useFsEvents && FsEventsHandler.canUse()) {
+    // _addToFsEvents方法继承自FsEventsHandler
+    paths.forEach(this._addToFsEvents, this);
+  } else {
+    asyncEach(paths, function(path, next) {
+      // 否则还是用NodeFs监听文件
+      // _addToNodeFs方法继承自NodeFsHandler
+      this._addToNodeFs(path, !_internal, 0, 0, _origAdd, function(err, res) {
+        if (res) this._emitReady();
+        next(err, res);
+      }.bind(this));
+    }
+  }
+}
+
+// Export FSWatcher class
+exports.FSWatcher = FSWatcher;
+```
 
 
