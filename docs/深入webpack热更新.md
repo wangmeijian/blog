@@ -1,10 +1,10 @@
 # 深入webpack热更新
 
-webpack热更新（简称HMR）给web开发者带来了极大的便利，它可以在修改代码后自动替换改动的部分，还能保持当前页面状态，省去了不必要的页面刷新，节省了web开发者的时间。
+webpack热更新（简称HMR）给web开发者带来了极大的便利，它可以在修改代码后自动编译并替换修改的部分，还能保持当前页面状态，省去了不必要的页面刷新，节省了web开发者的时间。
 
 ## HMR的执行过程
 
-**首先```webpack-dev-server```启动本地服务，让浏览器可以请求本地静态资源。浏览器与本地服务建立一个```websocket```连接，```webpack```调用```chokidar```模块来监听文件变化，当用户修改文件后，```chokidar```通知```webpack```哪些文件发生了变化，```webpack```编译发生变化的文件，```webpack-dev-server```将重新编辑后的文件的hash发送给浏览器，浏览器以hash为参数发起请求获取更新的文件，获取文件后替换生效。**
+**首先```webpack-dev-server```启动本地服务，让浏览器可以请求本地静态资源。浏览器与本地服务建立```websocket```连接，```webpack```调用```chokidar```模块来监听文件变化，当用户修改文件后，```chokidar```通知```webpack```哪些文件发生了变化，```webpack```编译修改的文件，```webpack-dev-server```将重新编辑后的文件的hash发送给浏览器，浏览器以hash为参数发起请求获取更新的文件，获取文件后替换生效。**
 
 ## HMR详细执行过程
 
@@ -26,7 +26,7 @@ setupApp() {
 
 > ```webpack```调用```chokidar```模块来监听文件变化
 
-webpack内部会实例化一个编译器```compiler```，```compiler.watch```方法内部依赖了```chokidar```模块来监听文件变化，```chokidar```那么又是根据什么来判断文件发生了变化？而且webpack执行在node环境中，为什么不直接用```fs.watch```和```fs.watchFile```来监听文件变化？
+webpack内部会实例化一个编译器```compiler```，```compiler.watch```内部依赖了```chokidar```模块来监听文件变化，```chokidar```那么又是根据什么来判断文件发生了变化？而且webpack执行在node环境中，为什么不直接用```fs.watch```和```fs.watchFile```来监听文件变化？
 
 实际上```chokidar```内部也依赖了```fs.watch```和```fs.watchFile```来监听文件变化，但这不是它的全部，由于```fs.watch```和```fs.watchFile```这两个API存在一些问题：
 
@@ -43,7 +43,7 @@ Nodejs ```fs.watchFile```
 
 Nodejs官方文档上有说明：fs.watch的API在各个平台上并非100%一致，在某些情况下不可用，比如Docker上。
 
-为了解决以上问题，```chokidar```将内部核心内容分为两块，分别是```nodefs-handler.js```和```fsEvents-handler.js```，macOS使用```fsEvents-handler.js```监听文件变化，其它系统用```nodefs-handler.js```。```fsEvents-handler.js```内部依赖```fsevents```模块，```fsevents```集成了C++从系统底层来监听文件变化，一图胜千言
+为了解决以上问题，```chokidar```将内部核心内容分为两块，分别是```nodefs-handler.js```和```fsEvents-handler.js```，macOS使用```fsEvents-handler.js```监听文件变化，其它系统用```nodefs-handler.js```，用户可以通过```options.useFsEvents```配置强制使用```fsEvents-handler.js```来监听文件变化。```fsEvents-handler.js```内部又依赖```fsevents```模块，```fsevents```集成了C++从系统底层来监听文件变化，一图胜千言
 
 <img src="https://raw.githubusercontent.com/wangmeijian/images/master/webpack/chokidar.png" width="600" />
 
@@ -66,7 +66,7 @@ if (FsEventsHandler.canUse()) importHandler(FsEventsHandler);
 
 // 增加文件监听
 FSWatcher.prototype.add = function(paths) {
-  // 判断系统支持fsevents，优先用fsevents监听文件变化
+  // 判断用户配置以及系统是否支持fsevents，优先用fsevents监听文件变化
   if (this.options.useFsEvents && FsEventsHandler.canUse()) {
     // _addToFsEvents方法继承自FsEventsHandler
     paths.forEach(this._addToFsEvents, this);
@@ -86,4 +86,14 @@ FSWatcher.prototype.add = function(paths) {
 exports.FSWatcher = FSWatcher;
 ```
 
+> 浏览器以hash为参数发起请求获取更新的文件，获取文件后替换生效
 
+浏览器端收到本地服务通过websocket发过来的hash值，直接以<script src="[chunkId].[hash].hot-update.js"></script>脚本的方式加载更新的代码，代码内容是一个自动执行的全局函数
+```js
+webpackHotUpdate([chunkId], {
+  [chunkId]: (function (module, exports) {
+    eval('代码模块内容')
+  })
+})
+```
+```webpackHotUpdate```是webpack挂载在window上的全局函数
