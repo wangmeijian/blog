@@ -88,12 +88,73 @@ exports.FSWatcher = FSWatcher;
 
 > 浏览器以hash为参数发起请求获取更新的文件，获取文件后替换生效
 
-浏览器端收到本地服务通过websocket发过来的hash值，直接以<script src="[chunkId].[hash].hot-update.js"></script>脚本的方式加载更新的代码，代码内容是一个自动执行的全局函数
+浏览器端收到本地服务通过websocket发过来的hash值，直接以<script src="[chunkId].[hash].hot-update.js"></script>脚本的方式加载更新的chunk文件，文件内容是一个自动执行的全局函数```webpackHotUpdate```，```webpackHotUpdate```的参数是chunkId以及chunk包含的模块ID和内容
 ```js
-webpackHotUpdate([chunkId], {
-  [chunkId]: (function (module, exports) {
+webpackHotUpdate([chunkId], moreModules)
+```
+
+```webpackHotUpdate```是webpack挂载在window上的全局函数，用来下载热更新模块(moreModules)，moreModules是模块ID和模块内容的映射关系
+```js
+{
+  [moduleId]: (function (module, exports) {
     eval('代码模块内容')
   })
-})
+}
 ```
-```webpackHotUpdate```是webpack挂载在window上的全局函数
+```webpackHotUpdate```挂在window对象上
+```js
+window["webpackHotUpdate"] = function webpackHotUpdateCallback(chunkId, moreModules) {
+  hotAddUpdateChunk(chunkId, moreModules);
+}
+
+function hotAddUpdateChunk(chunkId, moreModules) {
+  // 遍历模块ID，保存到hotUpdate
+  for (var moduleId in moreModules) {
+    if (Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
+      hotUpdate[moduleId] = moreModules[moduleId];
+    }
+  }
+  if (--hotWaitingFiles === 0 && hotChunksLoading === 0) {
+    hotUpdateDownloaded();
+  }
+}
+
+function hotUpdateDownloaded() {
+  var outdatedModules = [];
+  // 遍历hotUpdate，push到outdatedModules，用于删除过时的模块
+  for (var id in hotUpdate) {
+    outdatedModules.push(id);
+  }
+}
+```
+删除过时的模块，```__webpack_require__[moduleId]```更新代码
+```js
+function hotApply(options){
+  var queue = outdatedModules.slice();
+  while (queue.length > 0) {
+    // 删除缓存
+    delete installedModules[moduleId];
+    // 删除过时的依赖
+    delete outdatedDependencies[moduleId];
+  }
+  // 保存模块ID，便于更新代码
+  var outdatedSelfAcceptedModules = [];
+	for (i = 0; i < outdatedModules.length; i++) {
+    outdatedSelfAcceptedModules.push({
+      module: moduleId
+    });
+  }
+
+  for (i = 0; i < outdatedSelfAcceptedModules.length; i++) {
+    var item = outdatedSelfAcceptedModules[i];
+    moduleId = item.module;
+    //更新代码
+    __webpack_require__(moduleId);
+  }
+}
+```
+一图胜千言
+
+<img src="https://raw.githubusercontent.com/wangmeijian/images/master/webpack/HMR.png" />
+
+HMR大概就是这样
