@@ -4,6 +4,8 @@
 
 对前端来说，权限控制分两种，第一种是页面级的，第二种是页面上某个块或某个按钮级别的。
 
+## 控制路由
+
 第一种比较简单，按模块划分用户权限，隐藏没有权限的页面导航，再在路由层面增加权限判断，拦截直接输入越权页面URL的用户访问页面
 
 ```js
@@ -48,4 +50,94 @@ router.beforeEach((to, from, next) => {
   next();
 })
 ```
-第二种，对用户的某个UI操作做权限判断
+## 控制按钮
+
+第二种，对用户的某个UI操作做权限判断。
+
+举个例子，根据网络实名制规定，用户在网站跟帖评论必须实名制，为了引导未实名用户参与评论，又不能直接对其隐藏评论功能，这时候就要区分已实名与未实名用户权限，在“提交评论”按钮上做权限判断。一个项目中要做权限判断的地方往往有很多，如果对每个按钮绑定事件回调，工作量太大，同时也不好维护，更好的做法是，使用自定义指令
+
+```js
+import { Message } from 'element-ui'
+// 当前用户权限列表
+const permission = {
+  // 模块权限
+  user: false
+}
+// 注册一个全局自定义指令 `v-permission`
+Vue.directive('permission', {
+  bind: function (el, binding) {
+    // 点击时判断权限
+    el.addEventListener('click', () => {
+      if (!permission[binding.value] ){
+        Message.error('无权限')
+      }
+    }, false)
+  }
+})
+```
+
+使用
+
+```js
+<button v-permission="'user'" @click="submit">提交评论</button>
+```
+你会发现权限判断的同时，click的回调submit也触发了，为了解决这个问题，需要把submit传到v-permission内部去执行  
+
+```js
+// html
+<button v-permission="{
+  value: 'user',
+  click: submit
+}">提交评论</button>
+
+// js
+import { Message } from 'element-ui'
+// 当前用户权限列表
+const permission = {
+  // 模块权限
+  user: false
+}
+// 注册一个全局自定义指令 `v-permission`
+Vue.directive('permission', {
+  bind: function (el, binding) {
+    let { value, click } = binding.value;
+    // 点击时判断权限
+    el.addEventListener('click', () => {
+      if (!permission[value] ){
+        Message.error('无权限')
+        return false;
+      }
+      click();
+    }, false)
+  }
+})
+```
+## 禁用按钮
+
+某些情况下，需要禁用无权限的操作入口
+
+```js
+// html
+<button v-permission="{
+  value: 'user',
+  disabled: true
+}">提交评论</button>
+
+// js
+import { Message } from 'element-ui'
+// 当前用户权限列表
+const permission = {
+  // 模块权限
+  user: false
+}
+// 注册一个全局自定义指令 `v-permission`
+Vue.directive('permission', {
+  bind: function (el, binding) {
+    if (!permission[value] ){
+      Message.error('无权限')
+      el.setAttribute('disabled','disabled')
+    }
+  }
+})
+```
+
