@@ -136,9 +136,10 @@ const permission = {
 // 注册一个全局自定义指令 `v-permission`
 Vue.directive('permission', {
   bind: function (el, binding) {
+    let { value, disabled } = binding.value;
+
     if (!permission[value] ){
-      Message.error('无权限')
-      el.setAttribute('disabled','disabled')
+      el.setAttribute('disabled', disabled)
     }
   }
 })
