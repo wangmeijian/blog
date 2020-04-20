@@ -67,3 +67,5 @@ Cache-Control: no-store
 有存在的必要，为了兼容HTTP 1.0和HTTP 1.1  
 
 Last-Modified是HTTP 1.0的产物，ETag是HTTP 1.1的产物，当服务器返回了ETag，HTTP 1.1的客户端必须使用ETag来验证，当服务器只返回了Last-Modified，那就使用Last-Modified验证，如果服务器同时返回了Last-Modified和ETag，客户端应该同时使用这两种再验证方式。  
+
+> 觉得不错，点个star吧[Github](https://github.com/wangmeijian/blog)

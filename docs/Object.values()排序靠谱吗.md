@@ -1,7 +1,7 @@
 # Object.values()排序靠谱吗？
 
 看到一道算法题：
-> let arr = [ [1, 2, 2], [3, 4, 5, 5], [6, 7, 8, 9, [11, 12, [12, 13, [14] ] ] ], 10];
+> let arr = [ [1, 2, 2], [3, 4, 5, 5], [6, 7, 8, 9, [11, 12, [12, 13, [14] ] ] ], 10];  
 > 将数组扁平化并去除其中重复数据，最终得到一个升序且不重复的数组
 
 思路：
@@ -35,21 +35,21 @@ console.log(res);
 
 -2在最后，可见，存在负数的情况下，负数不会被排序，正数仍然会排序。那么，Object.values()返回的顺序背后的逻辑是什么？
 
-## for in遍历顺序
+## 遍历顺序
 
 MDN:
 > Object.values()方法返回一个给定对象自身的所有可枚举属性值的数组，值的顺序与使用for...in循环的顺序相同 
 
 值的顺序和```for in```循环的顺序相同，那么，```for in```循环的顺序又是什么样的？
 
-根据ECMA-262第三版，12.6.4的描述：
+根据[ECMA-262第三版](http://www.ecma-international.org/publications/files/ECMA-ST-ARCH/ECMA-262,%203rd%20edition,%20December%201999.pdf)，12.6.4的描述：
 > The order of enumeration is defined by the object.（枚举的顺序由对象定义。）
 
 ```for in```语句得到属性遍历顺序是由**对象定义时的书写顺序决定的**
 
 ECMA-262第五版规范中，对```for in```语句的遍历机制做了调整，属性遍历的顺序是没有被规定的。  
 
-最新的ECMA-262第十版，13.7.5.15 EnumerateObjectProperties ( O )，对```for in```属性遍历顺序仍没有规定
+最新的[ECMA-262第十版](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-262.pdf)，13.7.5.15 EnumerateObjectProperties ( O )，对```for in```属性遍历顺序仍没有规定
 
 > The mechanics and order of enumerating the properties is not specified（没有指定枚举属性的机制和顺序）
 
@@ -96,10 +96,7 @@ for(let key in map){
 // a、12、7、0、-2、-3.5、b
 ```
 
-参考链接：  
-[http://w3help.org/zh-cn/causes/SJ9011](http://w3help.org/zh-cn/causes/SJ9011)  
-[https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/for...in](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/for...in)  
+> 觉得不错，点个star[Github](https://github.com/wangmeijian/blog)
 
-> 觉得不错，点个star吧[Github](https://github.com/wangmeijian/blog)
-
+Github原文链接：[Github](https://github.com/wangmeijian/blog/blob/master/docs/Object.values()%E6%8E%92%E5%BA%8F%E9%9D%A0%E8%B0%B1%E5%90%97.md)
 
