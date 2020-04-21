@@ -42,14 +42,15 @@ MDN:
 
 值的顺序和```for in```循环的顺序相同，那么，```for in```循环的顺序又是什么样的？
 
-根据[ECMA-262第三版](http://www.ecma-international.org/publications/files/ECMA-ST-ARCH/ECMA-262,%203rd%20edition,%20December%201999.pdf)，12.6.4的描述：
+根据[ECMA-262第3版](http://www.ecma-international.org/publications/files/ECMA-ST-ARCH/ECMA-262,%203rd%20edition,%20December%201999.pdf)，12.6.4的描述：
 > The order of enumeration is defined by the object.（枚举的顺序由对象定义。）
 
 ```for in```语句得到属性遍历顺序是由**对象定义时的书写顺序决定的**
 
-ECMA-262第五版规范中，对```for in```语句的遍历机制做了调整，属性遍历的顺序是没有被规定的。  
+[ECMA-262第5版](https://www.ecma-international.org/ecma-262/5.1/#sec-12.6.4)规范中，对```for in```语句的遍历机制做了调整，属性遍历的顺序是没有被规定的。  
+> The mechanics and order of enumerating the properties is not specified.(没有指定枚举属性的机制和顺序)
 
-最新的[ECMA-262第十版](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-262.pdf)，13.7.5.15 EnumerateObjectProperties ( O )，对```for in```属性遍历顺序仍没有规定
+最新的[ECMA-262第10版](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-262.pdf)，13.7.5.15 EnumerateObjectProperties ( O )，对```for in```属性遍历顺序仍没有规定
 
 > The mechanics and order of enumerating the properties is not specified（没有指定枚举属性的机制和顺序）
 
@@ -71,11 +72,13 @@ for (var key in obj) {
 ```
 各浏览器表现如下：
 
-chrome（80.0.3987.163）、Firefox（72.0.2 (64 位)）、Safari（13.0.5 (15608.5.11)）表现一致为：```0、7、12、a、-2、-3.5、b```
+chrome（80.0.3987.163）、Firefox（72.0.2 (64 位)）、Safari（13.0.5 (15608.5.11)）、IE9+表现一致为：```0、7、12、a、-2、-3.5、b```
 
 IE6、IE7、IE8表现一致为：```a、12、7、0、-2、-3.5、b```
 
-可见，Chrome Firefox Safari 的 JavaScript 解析引擎遵循的是ECMA-262 第五版规范。因此，使用 for-in 语句遍历对象属性时遍历书序并非属性构建顺序。而 IE6 IE7 IE8 的 JavaScript 解析引擎遵循的是较老的 ECMA-262 第三版规范，属性遍历顺序由属性构建的顺序决定。
+注意：必须使用原生IE6/7/8测试，在高版本IE切换文档模式测试结果不准确  
+
+可见，Chrome、Firefox、Safari的JavaScript引擎遵循的是ECMA-262第5版规范。因此，使用 ```for-in``` 语句遍历对象属性时遍历书序并非属性构建顺序。而 IE6、IE7、IE8的JavaScript引擎遵循的是较老的ECMA-262第3版规范，属性遍历顺序由属性构建的顺序决定。
 
 ## 结论
 ```for in```语句无法保证遍历顺序，最好不要依赖它来排序。如果代码中要依赖遍历的顺序，请使用数组或Map数据结构，Map的遍历顺序就是插入顺序
