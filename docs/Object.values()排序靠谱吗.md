@@ -78,7 +78,7 @@ for (var key in obj) {
 
 注意：必须使用原生IE6/7/8测试，在高版本IE切换文档模式测试结果不准确  
 
-可见，Chrome、Firefox、Safari的JavaScript引擎遵循的是ECMA-262第5版规范。因此，使用 ```for-in``` 语句遍历对象属性时遍历书序并非属性构建顺序。而 IE6、IE7、IE8的JavaScript引擎遵循的是较老的ECMA-262第3版规范，属性遍历顺序由属性构建的顺序决定。
+可见，Chrome、Firefox、Safari、IE9+的JavaScript引擎遵循的是ECMA-262第5版规范。因此，使用 ```for-in``` 语句遍历对象属性时遍历书序并非属性构建顺序。而 IE6、IE7、IE8的JavaScript引擎遵循的是较老的ECMA-262第3版规范，属性遍历顺序由属性构建的顺序决定。
 
 ## 结论
 ```for in```语句无法保证遍历顺序，最好不要依赖它来排序。如果代码中要依赖遍历的顺序，请使用数组或Map数据结构，Map的遍历顺序就是插入顺序。
