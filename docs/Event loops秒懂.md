@@ -2,7 +2,7 @@
 
 <img src="https://raw.githubusercontent.com/wangmeijian/images/master/event-loops/event-loops.png" height="240" />
 
-## 简介
+## Event loops简介
 JS是一种单线程脚本语言，为什么要设计成单线程？
 
 举例说明，假设JS是多线程脚本语言，A线程修改了DOM，B线程删除了DOM，一旦B线程先执行完，DOM被删除了，A线程就会报错，为了避免类似这种问题，JS被设计为单线程  
@@ -13,12 +13,12 @@ Event loops分为2种队列，task队列、microtask队列，业界一般把task
 
 task队列和microtask队列执行顺序是怎样的？
 
-代码刚开始执行时，整体代码就是一个task，立即执行这个task，在执行过程中
+代码刚开始执行时，script脚本代码首先进入执行栈，在执行过程中
 
-* 遇到setTimeout、setInterval、I/O、setImmediate（Nodejs环境）就往task队列里push
+* 遇到setTimeout、setInterval、I/O、setImmediate就往task队列里push
 * 遇到Promise.then/catch/finally、MutationObserver、process.nextTick(Nodejs环境)就往microtask队列里push
 
-每执行完一个task，就会查看microtask队列里有没有待执行的任务，如果有，则按先进先出的原则依次执行其中的任务，执行完了再回到task队列，取下一个task执行；如果没有，就直接执行下一个task，以此类推，这就是Event loops，类似于递归执行过程
+执行栈中的代码执行完，会先查看microtask队列里有没有待执行的任务，如果有，则按先进先出的原则依次执行microtask中的全部任务。执行完之后，再检查task队列有没有待执行的任务，有则按先进先出的原则取一个task执行，每次执行完一个task，会检查microtask有没有待执行的任务，有则执行全部microtask任务，没有就继续下一个task，以此类推，这就是Event loops
 
 ## 案例
 按照以上规则，思考以下代码输出顺序
