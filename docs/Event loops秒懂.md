@@ -7,23 +7,41 @@ JS是一种单线程脚本语言，为什么要设计成单线程？
 
 举例说明，假设JS是多线程脚本语言，A线程修改了DOM，B线程删除了DOM，一旦B线程先执行完，DOM被删除了，A线程就会报错，为了避免类似这种问题，JS被设计为单线程  
 
-单线程的问题是一次只能做一件事，要做第二件事，必须等第一件事先做完。假如有个需求是每5分钟更新一次数据，用setInterval去计时，那么这个页面JS永远无法做其他事了，线程一直被setInterval占用着。为了让JS可以同时执行多个任务，引入了Event loops（事件循环）机制
+单线程的问题是一次只能做一件事，要做第二件事，必须等第一件事先做完。假如有个需求是每5分钟更新一次数据，用setInterval去计时，那么这个页面JS永远无法做其他事了，线程一直被setInterval占用着。为了让JS可以异步执行任务，引入了Event loops（事件循环）机制
 
-Event loops分为2种队列，task队列、microtask队列，业界一般把tasks队列称为宏任务，microtask翻译过来叫微任务。
+同步任务在主线程执行，形成执行栈，异步任务分为2种队列，task队列、microtask队列，业界一般把tasks队列称为宏任务，microtask翻译过来叫微任务。
 
-task队列和microtask队列执行顺序是怎样的？
+## 执行顺序
 
-代码刚开始执行时，script脚本代码首先进入执行栈，在执行过程中
+task队列和microtask队列执行顺序是怎样的？一个简单的例子：
 
-* 遇到setTimeout、setInterval、I/O、setImmediate就往task队列里push
-* 遇到Promise.then/catch/finally、MutationObserver、process.nextTick(Nodejs环境)就往microtask队列里push
+```js
+setTimeout(() => {
+  console.log(1)
+}, 0)
 
-执行栈中的代码执行完，会先查看microtask队列里有没有待执行的任务，如果有，则按先进先出的原则依次执行microtask中的全部任务。执行完之后，再检查task队列有没有待执行的任务，有则按先进先出的原则取一个task执行，每次执行完一个task，会检查microtask有没有待执行的任务，有则执行全部microtask任务，没有就继续下一个task，以此类推，这就是Event loops
+Promise.resolve().then(() => {
+  console.log(2)
+})
+
+console.log(3)
+// 输出：3、2、1
+```
+输出结果是3、2、1，代码从上往下执行，```setTimeout```回调没有立即执行，而是将回调push到task队列等待下一次事件循环，```Promise.resolve().then```也没有立即执行，将回调push到microtask队列，等待执行栈代码执行完再执行，```console.log(3)```属于同步代码，进入执行栈立即执行，输出3。
+
+执行栈中的代码执行完，会先查看microtask队列里有没有待执行的任务，如果有，则按先进先出的原则依次执行microtask中的全部任务，输出2。执行完之后，再检查task队列有没有待执行的任务，有则按先进先出的原则取一个task执行，输出1。
+
+每执行完一个task，会检查microtask队列有没有待执行的任务，有则执行全部microtask任务，没有就继续下一个task，以此类推，这就是Event loops。
+
+除了```setTimeout```和```Promise```，还有哪些API会生成任务队列？
+
+* 常见会生成task的有：```setTimeout```、```setInterval```、```I/O```（鼠标事件、键盘输入、网络请求等）、```setImmediate```
+* 常见会生成microtask的有：```Promise```、```MutationObserver```、```process.nextTick```(Nodejs环境)
 
 ## 案例
-按照以上规则，思考以下代码输出顺序
+按照以上规则，思考这个例子输出结果
 ```js
-// 先自己思考一下输出顺序
+// 先自己思考一下输出结果
 console.log('script start');
 
 setTimeout(function () {
@@ -41,12 +59,12 @@ console.log('script end');
 
 分析：
 
-1. 整体代码做为第一个task，从上到下开始执行
+1. 从上到下开始执行
 2. 输出```script start```
 3. 遇到```setTimeout()```，push到task队列，等待执行
 4. 遇到```Promise```第一个```then()```，push到microtask队列，等待执行
 5. 输出```script end```
-6. 第一个task执行完成，查看microtask队列，有任务，开始执行
+6. 同步代码执行完成，查看microtask队列，有任务，开始执行
 7. 输出```promise```，遇到第二个```then()```，push到microtask队列
 8. 输出刚刚push的```then```
 9. microtask队列执行完成，取下一个task执行
@@ -76,9 +94,9 @@ Promise.resolve().then(function () {
 
 分析：
 
-1. 整体代码为第一个task，从上到下开始执行
+1. 从上到下开始执行
 2. 遇到第一个then，push到microtask队列
-3. 第一个task执行完成，查看microtask队列，有任务，开始执行
+3. 没有可执行的同步代码，查看microtask队列，有任务，开始执行
 4. 输出 ```promise```
 5. 进入内部new Promise，输出 ```inner promise```  
 6. 遇到内部new Promise第一个then，push到microtask队列
@@ -111,9 +129,9 @@ Promise.resolve().then(function () {
 ```
 分析：
 
-1. 整体代码为第一个task，从上到下开始执行
+1. 从上到下开始执行
 2. 遇到第一个then，push到microtask队列
-3. 第一个task执行完成，查看microtask队列，有任务，开始执行
+3. 没有可执行的同步代码，查看microtask队列，有任务，开始执行
 4. 输出 ```promise```
 5. 进入内部new Promise，输出 ```inner promise```  
 6. 遇到内部new Promise第一个then，push到microtask队列，前6步跟上面一样
