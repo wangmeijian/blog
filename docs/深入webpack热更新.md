@@ -88,7 +88,20 @@ exports.FSWatcher = FSWatcher;
 
 > 浏览器以hash为参数发起请求获取更新的文件，获取文件后替换生效
 
-浏览器端收到本地服务通过websocket发过来的hash值，直接以<script src="[chunkId].[hash].hot-update.js"></script>脚本的方式加载更新的chunk文件，文件内容是一个自动执行的全局函数```webpackHotUpdate```，```webpackHotUpdate```的参数是chunkId以及chunk包含的模块ID和内容
+```webpack-dev-server```启动之后通过websocket会发一个hash告诉浏览器，下次如果有热更新，你就发起一个[hash].hot-update.json的请求，我会返回更新的模块名称，以及再下次发起请求的hash，格式如下
+
+```js
+let data = {
+  c: {
+    // 更新的模块是terminal
+    terminal: true
+  },
+  // 下次再有模块更新，用这个hash发起请求
+  h: "086d0e7074570fb43ad5"
+}
+```
+
+然后，浏览器注入<script src="[data.c.terminal].[hash].hot-update.js"></script>标签加载更新的chunk文件，文件内容是一个自动执行的全局函数```webpackHotUpdate```，```webpackHotUpdate```的参数是chunkId以及chunk包含的模块ID和内容
 ```js
 webpackHotUpdate([chunkId], moreModules)
 ```
