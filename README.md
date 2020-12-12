@@ -30,5 +30,7 @@
 
 [webpack 5 从零开始构建项目](https://github.com/wangmeijian/blog/blob/master/docs/14.md)
 
+[React中共享组件逻辑的三种方式](https://github.com/wangmeijian/blog/issues/1)
+
 
 更早的博客：[https://www.cnblogs.com/wangmeijian/](https://www.cnblogs.com/wangmeijian/)
