@@ -32,5 +32,7 @@
 
 [React中共享组件逻辑的三种方式](https://github.com/wangmeijian/blog/issues/1)
 
+[Promise是如何实现异步编程的？](https://github.com/wangmeijian/blog/issues/2)
+
 
 更早的博客：[https://www.cnblogs.com/wangmeijian/](https://www.cnblogs.com/wangmeijian/)
