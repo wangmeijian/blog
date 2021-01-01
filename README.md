@@ -34,5 +34,7 @@
 
 [Promise是如何实现异步编程的？](https://github.com/wangmeijian/blog/issues/2)
 
+[手写系列：call、apply、bind、函数柯里化](https://github.com/wangmeijian/blog/issues/3)
+
 
 更早的博客：[https://www.cnblogs.com/wangmeijian/](https://www.cnblogs.com/wangmeijian/)
