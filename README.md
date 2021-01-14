@@ -37,6 +37,3 @@
 [手写系列：call、apply、bind、函数柯里化、防抖、节流、new、Promise](https://github.com/wangmeijian/blog/issues/3)
 
 [用docker搭建前端环境](https://github.com/wangmeijian/blog/issues/4)
-
-
-更早的博客：[https://www.cnblogs.com/wangmeijian/](https://www.cnblogs.com/wangmeijian/)
