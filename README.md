@@ -9,7 +9,7 @@
 
 [四问HTTP缓存，你都了解吗？](https://github.com/wangmeijian/blog/blob/master/docs/%E5%9B%9B%E9%97%AEHTTP%E7%BC%93%E5%AD%98%EF%BC%8C%E4%BD%A0%E9%83%BD%E4%BA%86%E8%A7%A3%E5%90%97%EF%BC%9F.md)  
 
-[TypeScript interface声明](https://github.com/wangmeijian/blog/blob/master/docs/TypeScript%20interface%E5%A3%B0%E6%98%8E.md)  
+[TypeScript](https://github.com/wangmeijian/blog/blob/master/docs/TypeScript.md)  
 
 [Event loops秒懂](https://github.com/wangmeijian/blog/blob/master/docs/Event%20loops%E7%A7%92%E6%87%82.md)   
 
