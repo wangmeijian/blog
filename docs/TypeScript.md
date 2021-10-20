@@ -54,7 +54,7 @@ npm install @types/react
 装了```@types/react```还有一个好处就是会有代码提示  
 ![react代码提示](https://raw.githubusercontent.com/wangmeijian/images/master/typescript/20200315132725.png)
 
-## 函数重载
+## 三、函数重载
 
 比如，需要实现一个函数 reverse，输入数字 123 的时候，输出反转的数字 321，输入字符串 'hello' 的时候，输出反转的字符串 'olleh'。该如何定义TS？
 
@@ -84,7 +84,7 @@ function reverse(x: number | string): number | string | void {
 }}
 ```
 
-## 泛型
+## 四、泛型
 
 泛型（Generics）是指在定义函数、接口或类的时候，不预先指定具体的类型，而在使用的时候再指定类型的一种特性
 
@@ -129,7 +129,7 @@ function swap<T, U>(tuple: [T, U]): [U, T] {
 swap([7, 'seven']); // ['seven', 7]
 ```
 
-## 类型断言
+## 五、类型断言
 
 类型断言（Type Assertion）可以用来手动指定一个值的类型
 
