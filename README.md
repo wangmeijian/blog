@@ -1,4 +1,4 @@
-# Undefined的笔记本
+# Wang Blog
 
 一个非著名前端开发者的博客
 
