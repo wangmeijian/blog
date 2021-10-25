@@ -1,8 +1,8 @@
 ---
 home: true
-lang: zh
-heroText: Undefined的笔记本
-tagline: 一个非著名前端开发者的博客
+lang: zh-CN
+heroText: Wang Blog
+tagline: 某非著名前端开发者的博客
 actionText: 随便看看 →
 actionLink: /comprehensive/
 features:
