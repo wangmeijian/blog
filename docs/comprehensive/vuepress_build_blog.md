@@ -116,7 +116,7 @@ module.exports = {
 
 ## 四、部署到GitHub Page
 
-1. 开启GitHub Page：登录GitHub，打开你的博客对应的仓库，Settings -> Pages -> GitHub Pages -> Source -> 选择你要部署的分支 -> 选择根目录/root，保存
+1. 开启GitHub Page：登录GitHub，打开你的博客对应的仓库，Settings -> Pages -> GitHub Pages -> Source -> 选择你要部署的分支(新建一个分支gh-pages用于部署GitHub Page，否则会覆盖你的代码) -> 选择根目录/root，保存
 
 2. 回到blog根目录下，创建部署脚本deploy.hsh
 
@@ -139,8 +139,8 @@ git init
 git add -A
 git commit -m 'deploy'
 
-# 如果发布到 https://wangmeijian.github.io/blog
-git push -f git@github.com:wangmeijian/blog.git master:master
+# 如果发布到 https://wangmeijian.github.io/blog，gh-pages分支
+git push -f git@github.com:wangmeijian/blog.git master:gh-pages
 
 cd -
 ```
