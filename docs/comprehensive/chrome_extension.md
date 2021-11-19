@@ -1,6 +1,6 @@
 # 深入了解Chrome插件
 
-![](https://github.com/wangmeijian/blog/blob/master/public/chrome_ext.png)
+![An image](../../public/chrome_ext.png)
 
 ## 简介
 
@@ -28,7 +28,7 @@ Chrome插件基本元素可以单独运作，但相互协作才能体现出它�
 
 内容脚本、配置页面、弹出页面三者与后端脚本的通信，通过chrome.runtime.sendMessage发送信息，后端脚本使用chrome.runtime.onMessage.addListener监听
 
-![](https://github.com/wangmeijian/blog/blob/master/public/chrome_extention.png)
+![An image](../../public/chrome_extension.png)
 
 ## 如何解决插件热更新问题？
 
