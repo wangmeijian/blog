@@ -4,6 +4,7 @@ module.exports = {
   base: '/blog/',
   displayAllHeaders: true,
   themeConfig: {
+    lastUpdated: '上次更新',
     nav: [
       { text: '首页', link: '/' },
       { text: '大杂烩', link: '/comprehensive/' },
