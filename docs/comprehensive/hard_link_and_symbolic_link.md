@@ -45,7 +45,7 @@ stat hello.txt
 ## 硬链接
 文件和inode的关系是一对一，而文件名和inode的关系则是一对多，系统允许多个文件名对应一个inode
 
-<img src="/public/inode_relation.png" height="240" />
+<img src="https://user-images.githubusercontent.com/9384140/188419453-8d55b450-ffb8-4441-a359-d38124de6566.png" width="500" />
 
 inode信息中的硬链接（Links）数，就表示当前有几个文件名对应着该inode，换句话说，每个文件名就是文件的一个硬链接
 
@@ -93,5 +93,5 @@ rm -f hello.txt
 
 这就是软链接和硬链接的区别，软链接指向的是文件名（也就是硬链接），硬链接指向的是文件的inode号码。
 
-<img src="/public/ln.png" height="240" />
+<img src="https://user-images.githubusercontent.com/9384140/185368644-02d074bf-fb15-4820-81a0-c1b5762d633f.png" width="600" />
 
