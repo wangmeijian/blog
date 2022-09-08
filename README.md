@@ -3,6 +3,8 @@
 [查看全部文章 →](https://wangmeijian.github.io/blog/)
 
 
+[iTerm2中，Macbook触控栏在Git环境下的妙用](https://github.com/wangmeijian/blog/issues/13)
+
 [深入了解Chrome插件](https://github.com/wangmeijian/blog/issues/12)
 
 [pnpm凭什么这么快](https://github.com/wangmeijian/blog/issues/11)
