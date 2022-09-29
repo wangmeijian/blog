@@ -1,5 +1,3 @@
-# 一根前端说
-
 [查看全部文章 →](https://wangmeijian.github.io/blog/)
 
 [useMemo和React.memo，记住：要用useMemo，必须有依赖项](https://github.com/wangmeijian/blog/issues/14)

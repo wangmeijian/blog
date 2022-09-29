@@ -1,7 +1,7 @@
 ---
 home: true
 lang: zh-CN
-heroText: 一根前端说
+heroText: wangmeijian
 tagline: 某非著名前端开发者的博客
 actionText: 随便看看 →
 actionLink: /comprehensive/
