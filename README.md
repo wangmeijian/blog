@@ -2,6 +2,7 @@
 
 [查看全部文章 →](https://wangmeijian.github.io/blog/)
 
+[useMemo和React.memo，记住：要用useMemo，必须有依赖项](https://github.com/wangmeijian/blog/issues/14)
 
 [iTerm2中，Macbook触控栏在Git环境下的妙用](https://github.com/wangmeijian/blog/issues/13)
 
