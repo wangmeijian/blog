@@ -1,8 +1,8 @@
 # useMemo和React.memo的区别
 
-React日常开发中，当父子组件中的父组件```props```变化，导致子组件重新渲染，这不是我们想要的结果，我们希望只有在子组件本身的```props```更新时，子组件才重新渲染，为了达到这个目的，我们需要将子组件的渲染结果缓存。
+React日常开发中，有两种方式缓存渲染结果，```useMemo```和```React.memo```，他们的区别只需要记住一句话：要用```useMemo```，必须有依赖项。
 
-通常有两种方式来实现，```useMemo```和```React.memo```，看看他们分别适用于什么场景。
+```useMemo```和```React.memo```，看看他们分别适用于什么场景。
 
 ## useMemo
 
@@ -26,7 +26,7 @@ const MyComponent = React.memo(function MyComponent(props) {
 ## 举例
 只看原理和概念，理解是浅薄的，结合一个最简单的例子就非常容易理解了。
 
-初始状态：父组件Parent更新时间戳，子组件```Child```每次都重新渲染，[Demo](https://codepen.io/wangmeijian/pen/YzLeJbN?editors=0011)
+初始状态：父组件```Parent```更新时间戳，子组件```Child```每次都重新渲染，[Demo](https://codepen.io/wangmeijian/pen/YzLeJbN?editors=0011)
 
 用```React.memo```包装```Child```组件，再点击更新时间戳，```Child```不会重新渲染
 ```tsx
@@ -56,4 +56,3 @@ function Child() {
 想让组件只在依赖项变化时重新渲染，用```useMemo```，**前提是组件必须有依赖项**
 
 最后，通篇只需要记住一句话：**要用```useMemo```，必须有依赖项**
-
