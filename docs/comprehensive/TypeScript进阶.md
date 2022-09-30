@@ -1,3 +1,5 @@
+# TypeScript进阶——结合实例学TS
+
 通过问题来学习技术是个很好的途径，本文主要解决三个问题：
 
 1. 如何获取对象所有键的联合类型？
@@ -156,4 +158,4 @@ const result = hello();
 type T3 = typeof result // string
 ```
 
-
+[GitHub](https://github.com/wangmeijian/blog/issues/15)
