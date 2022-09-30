@@ -1,6 +1,6 @@
 [查看全部文章 →](https://wangmeijian.github.io/blog/)
 
-[TypeScript进阶](https://github.com/wangmeijian/blog/issues/15)
+[TypeScript进阶——结合实例学TS](https://github.com/wangmeijian/blog/issues/15)
 
 [TypeScript基础](https://wangmeijian.github.io/blog/comprehensive/TypeScript.html)
 
