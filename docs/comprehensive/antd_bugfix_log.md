@@ -12,18 +12,18 @@ Ant Design有不少Bug，你可以直接访问它的[Issues](https://github.com/
 
 ## 第二步、准备工作
 
-[Fork ant-design仓库](https://github.com/ant-design/ant-design/fork)到自己的Github，回到自己的Github，将刚刚Fork的仓库克隆到本地，然后基于master分支新建一个bugfix分支，然后安装依赖，启动项目之后，就可以在浏览器访问本地启动的Ant Design官网上的任一Demo，方便调试。
+[Fork ant-design仓库](https://github.com/ant-design/ant-design/fork)到自己的Github，回到自己的Github，将刚刚Fork的仓库克隆到本地，然后基于master分支新建一个bugfix分支，接着安装依赖，启动项目之后，就可以在开发环境访问Ant Design官网上所有的Demo，方便调试。
 
 ```bash
 npm install && npm run start
 ```
 
 ## 第三步、问题排查
-回到问题[#37165](https://github.com/ant-design/ant-design/issues/37165)，它的表现是：**一个DatePicker，一个Input, 用户选择Input的内容进行复制时经常会滑到DatePicker，会触发日历控件输入框的focus事件**，这种操作是比较常见的，问题简化完了就是：只要在日历控件上触发mouseUp就会打开日历控件选择面板。
+回到问题[#37165](https://github.com/ant-design/ant-design/issues/37165)，它的表现是：**一个DatePicker，一个Input, 用户选择Input的内容进行复制时经常会滑到DatePicker，会触发日历控件输入框的focus事件**。
 
-查看官网Demo发现确实存在这个问题，后续可以直接用本地官网的Demo调试，不需要额外写Demo。
+这种操作是比较常见的，问题简化完了就是：只要在日历控件上触发mouseUp就会打开日历控件选择面板。
 
-第一反应是日历控件的输入框绑定了onMouseUp事件，查看对应的日历组件```DatePicker```源码，定位到文件```ant-design/components/date-picker/generatePicker/generateSinglePicker.tsx```第121~156行（基于antd@4.23.4版本，不同版本行数可能不同）：
+查看官网Demo发现确实存在这个问题，第一反应是日历控件的输入框绑定了onMouseUp事件，查看对应的```DatePicker```组件源码，定位到文件```ant-design/components/date-picker/generatePicker/generateSinglePicker.tsx```第121~156行（基于antd@4.23.4版本，不同版本行数可能不同）：
 
 ```jsx
 import RCPicker from 'rc-picker';
@@ -67,11 +67,11 @@ import RCPicker from 'rc-picker';
   disabled={mergedDisabled}
 />
 ```
-以上源码没有传入onMouseUp，将解构赋值prop的```{...restProps}```注释掉，查看本地官网Demo，问题依然存在，说明这里面也没有传onMouseUp。
+以上源码没有传入onMouseUp，将解构赋值prop的```{...restProps}```注释掉，查看本地Demo，问题依然存在，说明这里面也没有传onMouseUp。
 
 接下来继续深入RCPicker组件，rc-picker是react-components组件库中的日历组件，Ant Design大部分组件都是在react-components基础上封装的。
 
-查看[rc-picker源码](https://github.dev/react-component/picker)，rc-picker默认导出的是Picker组件，定位到```picker/src/Picker.tsx```，搜索onMouseUp，发现在日历控件输入框的父级div绑定了onMouseUp事件，对应的回调函数是287行（基于rc-picker@2.6.10）的onInternalMouseUp：
+查看[rc-picker源码](https://github.dev/react-component/picker)，rc-picker默认导出的是Picker组件，定位到```picker/src/Picker.tsx```，搜索字符串"onMouseUp"，发现在日历控件输入框的父级div绑定了onMouseUp事件，对应的回调函数在287行（基于rc-picker@2.6.10）：
 
 ```jsx
 // 输入框父级元素 L530~L555
@@ -116,7 +116,7 @@ const onInternalMouseUp: React.MouseEventHandler<HTMLDivElement> = (...args) => 
   }
 };
 ```
-就在onMouseUp回调函数中，除了触发onMouseUp，还触发了输入框的focus事件！
+就在函数onInternalMouseUp中，除了触发onMouseUp，还触发了输入框的focus事件！
 
 ```js
 if (inputRef.current) {
@@ -125,17 +125,19 @@ if (inputRef.current) {
 }
 ```
 
-此时，应该弄清楚当时为什么要写这几行代码，最好的途径就是看看当时的commit message，为了方便后续调试，还是将代码克隆到本地：先Fork rc-picker仓库，新建分支，安装依赖，启动项目。
+此时，应该弄清楚一件事：当时为什么要写这几行代码？
+
+最好的途径就是看看当时的commit message，为了方便后续调试，还是将rc-picker仓库克隆到本地：先Fork，再新建分支，然后安装依赖，启动项目。
 
 PS：VSCode安装GitLens插件，即可查看每一行代码的commit记录
 
-查看这几行代码对应的[commit](https://github.com/ant-design/ant-design/issues/21149)，原来是为了解决Ant Design的日历控件点击输入框右侧的icon没有弹出日历面板的问题。
+查看这几行代码对应的[commit](https://github.com/ant-design/ant-design/issues/21149)，原来，是为了解决Ant Design的日历控件点击输入框右侧的icon没有弹出日历面板的问题。
 
 知道它的作用了，已经成功了一半！看看要怎么修复？
 
 ## 第四步、问题修复
 
-到这一步，建议先到对应的Issue下面留言说明正在处理中，省的其他开发者做重复劳动。
+到这一步，建议先到对应的Issue下面留言说明正在处理中，避免其他开发者再花时间修复同一个问题。
 
 接着，要解决2个问题：
 
@@ -144,7 +146,7 @@ PS：VSCode安装GitLens插件，即可查看每一行代码的commit记录
 
 答案显而易见了，那就是改成在onClick里触发，因为icon节点同样被输入框的父级包裹，icon的click事件必然会冒泡到父级，从而触发父级的onClick。
 
-查看以上源码发现，输入框的父级已经有一个onClick事件，只需要将以上的4行代码挪到onClick的回调即可，具体修改点击[这里](https://github.com/react-component/picker/pull/490/files#diff-bb3a22d33f64a888c413a1984f1ecf232163cca78334ccf4a7f823e241fbd0ab)查看
+查看以上源码发现，输入框的父级已经有一个onClick属性，只需要将以上的4行代码挪到onClick的回调即可，点击[这里](https://github.com/react-component/picker/pull/490/files#diff-bb3a22d33f64a888c413a1984f1ecf232163cca78334ccf4a7f823e241fbd0ab)查看详细修改。
 
 修改完成，查看本地Demo，问题已经解决了，胜利在望！
 
@@ -184,7 +186,7 @@ Time:        15.643s
 
 这一步，是本文最简单的一步了！
 
-提交代码，push到远程仓库，打开仓库页面，会看到页面上出现了一个【compare & pull request】的入口，点击即可向Ant Design创建pull request，输入你修复的Issue链接（这个很重要，到时候Issue页面会自动关联你的此次的pull request）和修复思路或理由，方便管理员review。
+提交代码，push到远程仓库，打开仓库页面，会看到页面上出现了一个【compare & pull request】的入口，点击即可向Ant Design创建合并请求，输入修复的Issue链接（这个很重要，到时候Issue页面会自动关联你的此次的pull request）和修复思路或理由，方便管理员review。
 
 最后，等待管理员review，没问题的话管理员会合并分支，然后发布新版本，代码最终会应用到数十万项目中，Bug修复大功告成！
 
