@@ -35,12 +35,12 @@ const ChildHOC = React.memo(Child);
 <ChildHOC />
 ```
 
-用useMemo处理
+用useMemo处理，注意：此时没有配置依赖项数组
 ```tsx
 function Child() {
 	const renderCount = useRef(0);
 	
-	return useMemo(() => <div>子组件渲染次数：{renderCount.current++}</div>),[]);
+	return useMemo(() => <div>子组件渲染次数：{renderCount.current++}</div>));
 }
 ```
 会发现，```Child```还是会重新渲染，**因为如果没有提供依赖项数组，```useMemo```在每次渲染时都会计算新的值**
@@ -49,10 +49,10 @@ function Child() {
 
 此时，只有当```Child```的```props```变化，```Child```才会重新渲染
 
+假如给useMemo配置一个空的依赖项数组，```Child```也不会重新渲染。
+
 ## 总结
 
 想让组件只在```props```变化时重新渲染，用```React.memo```
 
-想让组件只在依赖项变化时重新渲染，用```useMemo```，**前提是组件必须有依赖项**
-
-最后，通篇只需要记住一句话：**要用```useMemo```，必须有依赖项**
+想让组件只在依赖项变化时重新渲染，用```useMemo```
