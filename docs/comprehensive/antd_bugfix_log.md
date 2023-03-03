@@ -1,4 +1,4 @@
-# 我是如何修复一个Ant Design 的Bug的？
+# 如何修复Ant Design 的Bug？
 
 我在工作中大量使用Ant Design，它为我省去了很多重复劳动，所以有空的时候，我也会为Ant Design做一些微小的贡献。
 
@@ -12,16 +12,16 @@ Ant Design有不少Bug，你可以直接访问它的[Issues](https://github.com/
 
 ## 第二步、准备工作
 
-[Fork ant-design仓库](https://github.com/ant-design/ant-design/fork)到自己的Github，回到自己的Github，将刚刚Fork的仓库克隆到本地，然后基于master分支新建一个bugfix分支，接着安装依赖，启动项目之后，就可以在开发环境访问Ant Design官网上所有的Demo，方便调试。
+[Fork ant-design仓库](https://github.com/ant-design/ant-design/fork)到自己的Github，回到自己的Github，将刚刚Fork的仓库克隆到本地，然后基于master分支新建一个bugfix分支，接着安装依赖，启动项目，然后就可以在开发环境访问Ant Design官网上所有的Demo，方便调试。
 
 ```bash
 npm install && npm run start
 ```
 
 ## 第三步、问题排查
-回到问题[#37165](https://github.com/ant-design/ant-design/issues/37165)，它的表现是：**一个DatePicker，一个Input, 用户选择Input的内容进行复制时经常会滑到DatePicker，会触发日历控件输入框的focus事件**。
+回到问题[#37165](https://github.com/ant-design/ant-design/issues/37165)，它的表现是：**一个DatePicker，一个Input, 用户用鼠标选中Input的内容进行复制时经常会滑到DatePicker，会触发日历控件输入框的focus事件**。
 
-这种操作是比较常见的，问题简化完了就是：只要在日历控件上触发mouseUp就会打开日历控件选择面板。
+这种操作是比较常见的，问题简化完了就是：只要在日历控件上触发mouseUp就会打开日历控件。
 
 查看官网Demo发现确实存在这个问题，第一反应是日历控件的输入框绑定了onMouseUp事件，查看对应的```DatePicker```组件源码，定位到文件```ant-design/components/date-picker/generatePicker/generateSinglePicker.tsx```第121~156行（基于antd@4.23.4版本，不同版本行数可能不同）：
 
@@ -67,11 +67,22 @@ import RCPicker from 'rc-picker';
   disabled={mergedDisabled}
 />
 ```
-以上源码没有传入onMouseUp，将解构赋值prop的```{...restProps}```注释掉，查看本地Demo，问题依然存在，说明这里面也没有传onMouseUp。
+以上源码没有传入onMouseUp，将解构赋值prop的```{...restProps}```注释掉，查看本地Demo，问题依然存在，说明```restProps```也没有传入```onMouseUp```。
 
-接下来继续深入RCPicker组件，rc-picker是react-components组件库中的日历组件，Ant Design大部分组件都是在react-components基础上封装的。
+由于```DatePicker```组件是基于```RCPicker```封装的，接下来继续深入```RCPicker```组件，看看```onMouseUp```是不是在```RCPicker```里面绑定的。
 
-查看[rc-picker源码](https://github.dev/react-component/picker)，rc-picker默认导出的是Picker组件，定位到```picker/src/Picker.tsx```，搜索字符串"onMouseUp"，发现在日历控件输入框的父级div绑定了onMouseUp事件，对应的回调函数在287行（基于rc-picker@2.6.10）：
+```rc-picker```是```react-components```组件库中的日历组件，Ant Design大部分组件都是在```react-components```基础上封装的。
+
+查看[rc-picker源码](https://github.dev/react-component/picker)，rc-picker默认导出的是Picker组件：
+
+```jsx
+import Picker from './Picker';
+
+//...
+export default Picker;
+```
+
+定位到```picker/src/Picker.tsx```，搜索字符串"onMouseUp"，发现在日历控件输入框的父级div绑定了onMouseUp事件，对应的回调函数在287行（基于rc-picker@2.6.10）：
 
 ```jsx
 // 输入框父级元素 L530~L555
@@ -129,9 +140,9 @@ if (inputRef.current) {
 
 最好的途径就是看看当时的commit message，为了方便后续调试，还是将rc-picker仓库克隆到本地：先Fork，再新建分支，然后安装依赖，启动项目。
 
-PS：VSCode安装GitLens插件，即可查看每一行代码的commit记录
+PS：VSCode安装GitLens插件，即可查看每一行代码的commit记录。
 
-查看这几行代码对应的[commit](https://github.com/ant-design/ant-design/issues/21149)，原来，是为了解决Ant Design的日历控件点击输入框右侧的icon没有弹出日历面板的问题。
+从这几行代码对应的[commit](https://github.com/ant-design/ant-design/issues/21149)了解到，这几行代码是为了解决Ant Design的日历控件点击输入框右侧的icon没有弹出日历面板的问题。
 
 知道它的作用了，已经成功了一半！看看要怎么修复？
 
@@ -193,4 +204,4 @@ Time:        15.643s
 ## 总结
 最后，总结一下，第一次提交PR，建议选择简单的Issue，重要的是先将整个流程熟悉一遍，不要一开始就挑战复杂的问题，如果花了很长时间却解决不了问题，自信心受挫，可能就不想继续下去了。
 
-说了这么多，点个star支持一下吧
+说了这么多，点个[star](https://github.com/wangmeijian/blog/issues/16)支持一下吧

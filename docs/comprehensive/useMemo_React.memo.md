@@ -1,8 +1,6 @@
 # useMemo和React.memo的区别
 
-React日常开发中，有两种方式缓存渲染结果，```useMemo```和```React.memo```，他们的区别只需要记住一句话：要用```useMemo```，必须有依赖项。
-
-```useMemo```和```React.memo```，看看他们分别适用于什么场景。
+React日常开发中，有两种方式缓存渲染结果，```useMemo```和```React.memo```，看看他们分别适用于什么场景。
 
 ## useMemo
 

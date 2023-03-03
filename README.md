@@ -1,5 +1,7 @@
 [查看全部文章 →](https://wangmeijian.github.io/blog/)
 
+[如何修复Ant Design 的Bug？](https://github.com/wangmeijian/blog/issues/16)
+
 [TypeScript进阶——结合实例学TS](https://github.com/wangmeijian/blog/issues/15)
 
 [TypeScript基础](https://wangmeijian.github.io/blog/comprehensive/TypeScript.html)
