@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>wangmeijian</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="前端技术博客，session、token和cookie，React中共享组件逻辑的三种方式，Event loops秒懂，Vue.nexttick，Webpack,web系统中的权限控制,深入webpack热更新,Vue的数据异步更新机制Vue.nextTick">
+    
+    <link rel="preload" href="/blog/assets/css/0.styles.dab10465.css" as="style"><link rel="preload" href="/blog/assets/js/app.ff8a5a53.js" as="script"><link rel="preload" href="/blog/assets/js/2.a74671fc.js" as="script"><link rel="preload" href="/blog/assets/js/10.ba7f8f86.js" as="script"><link rel="prefetch" href="/blog/assets/js/11.b994e709.js"><link rel="prefetch" href="/blog/assets/js/12.4d2bed3f.js"><link rel="prefetch" href="/blog/assets/js/13.42463a3c.js"><link rel="prefetch" href="/blog/assets/js/14.59bec38b.js"><link rel="prefetch" href="/blog/assets/js/15.b0a52f33.js"><link rel="prefetch" href="/blog/assets/js/16.1bd42cf7.js"><link rel="prefetch" href="/blog/assets/js/17.8e1aefa5.js"><link rel="prefetch" href="/blog/assets/js/18.ff8f535b.js"><link rel="prefetch" href="/blog/assets/js/19.fb71b26d.js"><link rel="prefetch" href="/blog/assets/js/20.06184bfd.js"><link rel="prefetch" href="/blog/assets/js/21.33744299.js"><link rel="prefetch" href="/blog/assets/js/22.f6ac9d16.js"><link rel="prefetch" href="/blog/assets/js/23.ff651201.js"><link rel="prefetch" href="/blog/assets/js/24.133424da.js"><link rel="prefetch" href="/blog/assets/js/25.89995017.js"><link rel="prefetch" href="/blog/assets/js/26.064cec12.js"><link rel="prefetch" href="/blog/assets/js/27.f453b1bd.js"><link rel="prefetch" href="/blog/assets/js/28.0dd1d6d3.js"><link rel="prefetch" href="/blog/assets/js/29.468cf556.js"><link rel="prefetch" href="/blog/assets/js/3.6ded804f.js"><link rel="prefetch" href="/blog/assets/js/30.d5bb9750.js"><link rel="prefetch" href="/blog/assets/js/31.f9d59e8d.js"><link rel="prefetch" href="/blog/assets/js/32.1ec543e3.js"><link rel="prefetch" href="/blog/assets/js/33.a9521184.js"><link rel="prefetch" href="/blog/assets/js/34.a8f0c09b.js"><link rel="prefetch" href="/blog/assets/js/35.084977b4.js"><link rel="prefetch" href="/blog/assets/js/36.47b0f38b.js"><link rel="prefetch" href="/blog/assets/js/37.f873dd65.js"><link rel="prefetch" href="/blog/assets/js/38.a6f612ca.js"><link rel="prefetch" href="/blog/assets/js/39.b0639bdf.js"><link rel="prefetch" href="/blog/assets/js/4.b5b2a9e7.js"><link rel="prefetch" href="/blog/assets/js/5.dbf340a7.js"><link rel="prefetch" href="/blog/assets/js/6.ed262bf9.js"><link rel="prefetch" href="/blog/assets/js/7.3eedf775.js"><link rel="prefetch" href="/blog/assets/js/8.931f8ff8.js"><link rel="prefetch" href="/blog/assets/js/9.53dc21d5.js">
+    <link rel="stylesheet" href="/blog/assets/css/0.styles.dab10465.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container no-sidebar"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog/" aria-current="page" class="home-link router-link-exact-active router-link-active"><!----> <span class="site-name">wangmeijian</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog/" aria-current="page" class="nav-link router-link-exact-active router-link-active">
+  首页
+</a></div><div class="nav-item"><a href="/blog/comprehensive/" class="nav-link">
+  大杂烩
+</a></div><div class="nav-item"><a href="https://github.com/wangmeijian" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog/" aria-current="page" class="nav-link router-link-exact-active router-link-active">
+  首页
+</a></div><div class="nav-item"><a href="/blog/comprehensive/" class="nav-link">
+  大杂烩
+</a></div><div class="nav-item"><a href="https://github.com/wangmeijian" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <!----> </aside> <main aria-labelledby="main-title" class="home"><header class="hero"><!----> <h1 id="main-title">
+      wangmeijian
+    </h1> <p class="description">
+      学习 • 记录 • 分享
+    </p> <p class="action"><a href="/blog/comprehensive/" class="nav-link action-button">
+  随便看看 →
+</a></p></header> <div class="features"><div class="feature"><h2>记录</h2> <p>日常开发和学习，经常会遇到各种问题，记录下来</p></div><div class="feature"><h2>分享</h2> <p>踩过的坑，积累的经验，分享出去，才更有价值</p></div></div> <div class="theme-default-content custom content__default"></div> <div class="footer">
+    MIT Licensed | Copyright © 2023-present Wangmeijian
+  </div></main></div><div class="global-ui"></div></div>
+    <script src="/blog/assets/js/app.ff8a5a53.js" defer></script><script src="/blog/assets/js/2.a74671fc.js" defer></script><script src="/blog/assets/js/10.ba7f8f86.js" defer></script>
+  </body>
+</html>

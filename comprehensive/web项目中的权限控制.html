@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>web系统中的权限控制 | wangmeijian</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="前端技术博客，session、token和cookie，React中共享组件逻辑的三种方式，Event loops秒懂，Vue.nexttick，Webpack,web系统中的权限控制,深入webpack热更新,Vue的数据异步更新机制Vue.nextTick">
+    
+    <link rel="preload" href="/blog/assets/css/0.styles.dab10465.css" as="style"><link rel="preload" href="/blog/assets/js/app.ff8a5a53.js" as="script"><link rel="preload" href="/blog/assets/js/2.a74671fc.js" as="script"><link rel="preload" href="/blog/assets/js/35.084977b4.js" as="script"><link rel="prefetch" href="/blog/assets/js/10.ba7f8f86.js"><link rel="prefetch" href="/blog/assets/js/11.b994e709.js"><link rel="prefetch" href="/blog/assets/js/12.4d2bed3f.js"><link rel="prefetch" href="/blog/assets/js/13.42463a3c.js"><link rel="prefetch" href="/blog/assets/js/14.59bec38b.js"><link rel="prefetch" href="/blog/assets/js/15.b0a52f33.js"><link rel="prefetch" href="/blog/assets/js/16.1bd42cf7.js"><link rel="prefetch" href="/blog/assets/js/17.8e1aefa5.js"><link rel="prefetch" href="/blog/assets/js/18.ff8f535b.js"><link rel="prefetch" href="/blog/assets/js/19.fb71b26d.js"><link rel="prefetch" href="/blog/assets/js/20.06184bfd.js"><link rel="prefetch" href="/blog/assets/js/21.33744299.js"><link rel="prefetch" href="/blog/assets/js/22.f6ac9d16.js"><link rel="prefetch" href="/blog/assets/js/23.ff651201.js"><link rel="prefetch" href="/blog/assets/js/24.133424da.js"><link rel="prefetch" href="/blog/assets/js/25.89995017.js"><link rel="prefetch" href="/blog/assets/js/26.064cec12.js"><link rel="prefetch" href="/blog/assets/js/27.f453b1bd.js"><link rel="prefetch" href="/blog/assets/js/28.0dd1d6d3.js"><link rel="prefetch" href="/blog/assets/js/29.468cf556.js"><link rel="prefetch" href="/blog/assets/js/3.6ded804f.js"><link rel="prefetch" href="/blog/assets/js/30.d5bb9750.js"><link rel="prefetch" href="/blog/assets/js/31.f9d59e8d.js"><link rel="prefetch" href="/blog/assets/js/32.1ec543e3.js"><link rel="prefetch" href="/blog/assets/js/33.a9521184.js"><link rel="prefetch" href="/blog/assets/js/34.a8f0c09b.js"><link rel="prefetch" href="/blog/assets/js/36.47b0f38b.js"><link rel="prefetch" href="/blog/assets/js/37.f873dd65.js"><link rel="prefetch" href="/blog/assets/js/38.a6f612ca.js"><link rel="prefetch" href="/blog/assets/js/39.b0639bdf.js"><link rel="prefetch" href="/blog/assets/js/4.b5b2a9e7.js"><link rel="prefetch" href="/blog/assets/js/5.dbf340a7.js"><link rel="prefetch" href="/blog/assets/js/6.ed262bf9.js"><link rel="prefetch" href="/blog/assets/js/7.3eedf775.js"><link rel="prefetch" href="/blog/assets/js/8.931f8ff8.js"><link rel="prefetch" href="/blog/assets/js/9.53dc21d5.js">
+    <link rel="stylesheet" href="/blog/assets/css/0.styles.dab10465.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog/" class="home-link router-link-active"><!----> <span class="site-name">wangmeijian</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/blog/comprehensive/" class="nav-link router-link-active">
+  大杂烩
+</a></div><div class="nav-item"><a href="https://github.com/wangmeijian" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/blog/comprehensive/" class="nav-link router-link-active">
+  大杂烩
+</a></div><div class="nav-item"><a href="https://github.com/wangmeijian" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Comprehensive</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/comprehensive/" aria-current="page" class="sidebar-link">大杂烩</a></li><li><a href="/blog/comprehensive/11.html" class="sidebar-link">[译]什么是网络可靠性，您如何衡量？</a></li><li><a href="/blog/comprehensive/12.html" class="sidebar-link">图解HTTPS</a></li><li><a href="/blog/comprehensive/13.html" class="sidebar-link">设置Cookie属性防止CSRF攻击</a></li><li><a href="/blog/comprehensive/14.html" class="sidebar-link">webpack 5 从零开始构建项目</a></li><li><a href="/blog/comprehensive/16.html" class="sidebar-link">React中共享组件逻辑的三种方式</a></li><li><a href="/blog/comprehensive/17.html" class="sidebar-link">Promise是如何实现异步编程的？</a></li><li><a href="/blog/comprehensive/18.html" class="sidebar-link">手写系列：call、apply、bind、函数柯里化、防抖、节流、new、Promise</a></li><li><a href="/blog/comprehensive/20.html" class="sidebar-link">docker搭建前端环境</a></li><li><a href="/blog/comprehensive/21.html" class="sidebar-link">session、token和cookie</a></li><li><a href="/blog/comprehensive/Event loops秒懂.html" class="sidebar-link">Event loops秒懂</a></li><li><a href="/blog/comprehensive/JS抽象语法树AST（Abstract syntax tree）.html" class="sidebar-link">JS抽象语法树（Abstract syntax tree）</a></li><li><a href="/blog/comprehensive/Object.values()排序靠谱吗.html" class="sidebar-link">Object.values()排序靠谱吗？</a></li><li><a href="/blog/comprehensive/TypeScript基础.html" class="sidebar-link">TypeSCript</a></li><li><a href="/blog/comprehensive/TypeScript进阶.html" class="sidebar-link">TypeScript进阶——结合实例学TS</a></li><li><a href="/blog/comprehensive/Vue的数据异步更新机制Vue.nextTick.html" class="sidebar-link">Vue的数据异步更新机制Vue.nextTick</a></li><li><a href="/blog/comprehensive/antd_bugfix_log.html" class="sidebar-link">如何修复Ant Design 的Bug？</a></li><li><a href="/blog/comprehensive/chrome_extension.html" class="sidebar-link">深入了解Chrome插件</a></li><li><a href="/blog/comprehensive/create_sectorial_by_svg.html" class="sidebar-link">如何快速绘制任意角度的扇形？</a></li><li><a href="/blog/comprehensive/css_curtain.html" class="sidebar-link">纯HTML+CSS 拉窗帘效果</a></li><li><a href="/blog/comprehensive/hard_link_and_symbolic_link.html" class="sidebar-link">透过inode来理解硬链接和软链接</a></li><li><a href="/blog/comprehensive/nodejs_ldap_login.html" class="sidebar-link">Nodejs接入LDAP认证，解决ConnectionError问题</a></li><li><a href="/blog/comprehensive/package_manager.html" class="sidebar-link">pnpm凭什么这么快</a></li><li><a href="/blog/comprehensive/touchbar_for_git.html" class="sidebar-link">iTerm2中，Macbook触控栏在Git环境下的妙用</a></li><li><a href="/blog/comprehensive/useMemo_React.memo.html" class="sidebar-link">useMemo和React.memo的区别</a></li><li><a href="/blog/comprehensive/vuepress_build_blog.html" class="sidebar-link">VuePress搭建GitHub Page博客</a></li><li><a href="/blog/comprehensive/webpack.html" class="sidebar-link">webpack</a></li><li><a href="/blog/comprehensive/web项目中的权限控制.html" class="active sidebar-link">web系统中的权限控制</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog/comprehensive/web项目中的权限控制.html#控制路由" class="sidebar-link">控制路由</a></li><li class="sidebar-sub-header"><a href="/blog/comprehensive/web项目中的权限控制.html#控制按钮" class="sidebar-link">控制按钮</a></li><li class="sidebar-sub-header"><a href="/blog/comprehensive/web项目中的权限控制.html#禁用按钮" class="sidebar-link">禁用按钮</a></li></ul></li><li><a href="/blog/comprehensive/前端一键启动本地应用——自定义协议.html" class="sidebar-link">前端一键启动本地应用——自定义协议</a></li><li><a href="/blog/comprehensive/四问HTTP缓存，你都了解吗？.html" class="sidebar-link">四问HTTP缓存，你都了解吗？</a></li><li><a href="/blog/comprehensive/如何为网站添加深色模式？.html" class="sidebar-link">如何为网站添加深色模式？</a></li><li><a href="/blog/comprehensive/深入webpack热更新.html" class="sidebar-link">深入webpack热更新</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="web系统中的权限控制"><a href="#web系统中的权限控制" class="header-anchor">#</a> web系统中的权限控制</h1> <p>六七年前，web系统中一般会有一个专门的403页面，用来阻止用户访问没有权限的页面或者操作，用户访问了没有权限的页面，由后端重定向到403页面。随着web技术发展，前端交互越来越多，权限控制越来越细，尤其B端web产品，一个系统可能有多达几十个角色，每个角色拥有不同的权限，一个用户对应一种角色，通过对角色权限的划分来控制用户权限，权限控制需要细分到页面上的操作按钮，如果再依靠以前那种页面跳转的交互方式来控制权限，未免太过低效，如何依靠前端实现权限控制，提高效率又能便于开发和管理呢？</p> <p>对前端来说，权限控制分两种，第一种是页面级的，第二种是按钮级别的。</p> <h2 id="控制路由"><a href="#控制路由" class="header-anchor">#</a> 控制路由</h2> <p>第一种比较简单，按模块划分用户权限，隐藏没有权限的页面导航，再在路由层面增加权限判断，拦截越权页面路由。</p> <p>举例，假如页面路由path是<code>/user</code>，某用户没有user页面权限，对应权限值为<code>user: false</code></p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">const</span> router <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VueRouter</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token operator">...</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token comment">// 当前用户权限列表</span>
+<span class="token keyword">const</span> permission <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 模块权限</span>
+  user<span class="token operator">:</span> <span class="token boolean">false</span>
+<span class="token punctuation">}</span>
+router<span class="token punctuation">.</span><span class="token function">beforeEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">to<span class="token punctuation">,</span> from<span class="token punctuation">,</span> next</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 路由path和权限对应</span>
+  <span class="token keyword">if</span><span class="token punctuation">(</span> <span class="token operator">!</span>permission<span class="token punctuation">[</span>to<span class="token punctuation">.</span>path<span class="token punctuation">]</span> <span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token function">next</span><span class="token punctuation">(</span><span class="token string">'/403'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+  <span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre></div><p>如果不想把权限直接和path关联，也可以把权限信息写到路由配置的meta</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">const</span> router <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VueRouter</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  routes<span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      path<span class="token operator">:</span> <span class="token string">'/user'</span><span class="token punctuation">,</span>
+      component<span class="token operator">:</span> User<span class="token punctuation">,</span>
+      meta<span class="token operator">:</span> <span class="token punctuation">{</span>
+        permission<span class="token operator">:</span> <span class="token string">'user'</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token comment">// 当前用户权限列表</span>
+<span class="token keyword">const</span> permission <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 模块权限</span>
+  user<span class="token operator">:</span> <span class="token boolean">false</span>
+<span class="token punctuation">}</span>
+router<span class="token punctuation">.</span><span class="token function">beforeEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">to<span class="token punctuation">,</span> from<span class="token punctuation">,</span> next</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 没有权限，跳转到403页面</span>
+  <span class="token keyword">if</span><span class="token punctuation">(</span> <span class="token operator">!</span>permission<span class="token punctuation">[</span>to<span class="token punctuation">.</span>meta<span class="token punctuation">.</span>permission<span class="token punctuation">]</span> <span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token function">next</span><span class="token punctuation">(</span><span class="token string">'/403'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+  <span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre></div><h2 id="控制按钮"><a href="#控制按钮" class="header-anchor">#</a> 控制按钮</h2> <p>第二种，对页面某个操作按钮做权限判断。</p> <p>举个例子，根据网络实名制规定，用户在网站跟帖评论必须实名制，为了引导未实名用户参与评论，又不能直接对其隐藏评论功能，这时候就要引入权限，区分已实名与未实名用户，在“提交评论”按钮上做权限判断。一个web系统中要做权限判断的地方往往有很多，如果对每个按钮绑定事件回调，工作量太大，同时也不好维护，更好的做法是，使用自定义指令</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">import</span> <span class="token punctuation">{</span> Message <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'element-ui'</span>
+<span class="token comment">// 当前用户权限列表</span>
+<span class="token keyword">const</span> permission <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 模块权限</span>
+  user<span class="token operator">:</span> <span class="token boolean">false</span>
+<span class="token punctuation">}</span>
+<span class="token comment">// 注册一个全局自定义指令 `v-permission`</span>
+Vue<span class="token punctuation">.</span><span class="token function">directive</span><span class="token punctuation">(</span><span class="token string">'permission'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+  <span class="token function-variable function">bind</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">el<span class="token punctuation">,</span> binding</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 点击时判断权限</span>
+    el<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>permission<span class="token punctuation">[</span>binding<span class="token punctuation">.</span>value<span class="token punctuation">]</span> <span class="token punctuation">)</span><span class="token punctuation">{</span>
+        Message<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">'无权限'</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre></div><p>使用</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token operator">&lt;</span>button v<span class="token operator">-</span>permission<span class="token operator">=</span><span class="token string">&quot;'user'&quot;</span> @click<span class="token operator">=</span><span class="token string">&quot;submit&quot;</span><span class="token operator">&gt;</span>提交评论<span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">&gt;</span>
+</code></pre></div><p>你会发现点击按钮，submit同时也触发了，为了解决这个问题，需要把submit放到权限判断之后去执行</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token operator">&lt;</span>button v<span class="token operator">-</span>permission<span class="token operator">=</span>&quot;<span class="token punctuation">{</span>
+  value<span class="token operator">:</span> <span class="token string">'user'</span><span class="token punctuation">,</span>
+  click<span class="token operator">:</span> submit
+<span class="token punctuation">}</span>&quot;<span class="token operator">&gt;</span>提交评论<span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">&gt;</span>
+</code></pre></div><div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">import</span> <span class="token punctuation">{</span> Message <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'element-ui'</span>
+<span class="token comment">// 当前用户权限列表</span>
+<span class="token keyword">const</span> permission <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 模块权限</span>
+  user<span class="token operator">:</span> <span class="token boolean">false</span>
+<span class="token punctuation">}</span>
+<span class="token comment">// 注册一个全局自定义指令 `v-permission`</span>
+Vue<span class="token punctuation">.</span><span class="token function">directive</span><span class="token punctuation">(</span><span class="token string">'permission'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+  <span class="token function-variable function">bind</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">el<span class="token punctuation">,</span> binding</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> <span class="token punctuation">{</span> value<span class="token punctuation">,</span> click <span class="token punctuation">}</span> <span class="token operator">=</span> binding<span class="token punctuation">.</span>value<span class="token punctuation">;</span>
+    <span class="token comment">// 点击时判断权限</span>
+    el<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>permission<span class="token punctuation">[</span>value<span class="token punctuation">]</span> <span class="token punctuation">)</span><span class="token punctuation">{</span>
+        Message<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">'无权限'</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      <span class="token function">click</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre></div><h2 id="禁用按钮"><a href="#禁用按钮" class="header-anchor">#</a> 禁用按钮</h2> <p>某些情况下，需要禁用无权限的操作</p> <div class="language-html extra-class"><pre class="language-html"><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">v-permission</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>{
+  value: <span class="token punctuation">'</span>user<span class="token punctuation">'</span>,
+  disabled: true
+}<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>提交评论<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span>
+</code></pre></div><div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">// js</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Message <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'element-ui'</span>
+<span class="token comment">// 当前用户权限列表</span>
+<span class="token keyword">const</span> permission <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 模块权限</span>
+  user<span class="token operator">:</span> <span class="token boolean">false</span>
+<span class="token punctuation">}</span>
+<span class="token comment">// 注册一个全局自定义指令 `v-permission`</span>
+Vue<span class="token punctuation">.</span><span class="token function">directive</span><span class="token punctuation">(</span><span class="token string">'permission'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+  <span class="token function-variable function">bind</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">el<span class="token punctuation">,</span> binding</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> <span class="token punctuation">{</span> value<span class="token punctuation">,</span> disabled <span class="token punctuation">}</span> <span class="token operator">=</span> binding<span class="token punctuation">.</span>value<span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>permission<span class="token punctuation">[</span>value<span class="token punctuation">]</span> <span class="token punctuation">)</span><span class="token punctuation">{</span>
+      el<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">'disabled'</span><span class="token punctuation">,</span> disabled<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre></div></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">上次更新:</span> <span class="time">10/23/2021, 10:33:11 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog/comprehensive/webpack.html" class="prev">
+        webpack
+      </a></span> <span class="next"><a href="/blog/comprehensive/前端一键启动本地应用——自定义协议.html">
+        前端一键启动本地应用——自定义协议
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/blog/assets/js/app.ff8a5a53.js" defer></script><script src="/blog/assets/js/2.a74671fc.js" defer></script><script src="/blog/assets/js/35.084977b4.js" defer></script>
+  </body>
+</html>
