@@ -77,6 +77,7 @@ type File = {
 ```ts
 type FileType = File[keyof File]
 ```
+注意！这里的File是TS类型，而不是js对象。
 
 ## Part 3：如何快速定义一个复杂对象的类型？
 
